@@ -1,0 +1,61 @@
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Login extends HttpServlet {
+
+  
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+               String email = request.getParameter("email");
+               String password =request.getParameter("password");
+               if(email.equals("")){
+                   String msg ="email can't be empty";
+                   request.setAttribute("msg", msg);
+               }
+               else if(email.contains("@")!=true){
+                   String msg ="email Should be contain @";
+                   request.setAttribute("msg", msg);
+               }
+              else if(email.contains(".")!=true){
+                   String msg ="email Should be contain .";
+                   request.setAttribute("msg", msg);
+               }
+               if(password.equals("")){
+                   String msg1 ="password can't be empty";
+                   request.setAttribute("msg1", msg1);
+                   //request.getRequestDispatcher("index.jsp").forward(request, response);
+               }
+               else if(password.length()<6 && password.length()<=20){
+                   String msg1 ="password length should be greater than 8 and equal to 20";
+                   request.setAttribute("msg1", msg1);
+               }
+               else if(password.matches(".*[0-9]{1,}.*")!=true){
+                   String msg1 ="password should contain atleast 1 digit";
+                   request.setAttribute("msg1", msg1);
+               }
+               else if(password.matches(".*[@#$]{1,}.*")!=true){
+                   String msg1 ="password should contain atleast one special character";
+                   request.setAttribute("msg1", msg1);
+               }
+               else if(password.matches(".*[A-Z]{1,}.*")!=true){
+                   String msg1 ="password should contain atleast one capital letter";
+                   request.setAttribute("msg1", msg1);
+               }
+               if(email.equals("") || email.contains("@")!=true ||  password.equals("") || password.length()<6 && password.length()<=20 
+                  || password.matches(".*[0-9]{1,}.*") != true || password.matches(".*[@#$]{1,}.*")!=true || password.matches(".*[A-Z]{1,}.*")!=true){
+                   request.getRequestDispatcher("index.jsp").forward(request, response);
+               }
+               else{
+                   request.getRequestDispatcher("login_task.jsp").forward(request, response);
+               }
+    }
+
+}
